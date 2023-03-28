@@ -1,0 +1,30 @@
+version: '3'
+services:
+    db:
+        build: mysql
+        platform: linux/amd64
+        volumes:
+            - ${MYSQL_DB_PATH}:/var/lib/mysql
+            # new image should include the sql file, it's gonna import it on startup
+            - ${IPS_SQL_FILE}:/docker-entrypoint-initdb.d/my.sql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    forum:
+        build:
+            context: php7-fpm
+            args:
+                TIMEZONE: ${TIMEZONE}
+        volumes:
+            - ${FORUM_APP_PATH}:/var/www/forum
+            - ./logs/forum:/var/www/forum/var/log
+    nginx:
+        build: nginx
+        ports:
+            - 80:80
+        volumes_from:
+            - forum
+        volumes:
+            - ./logs/nginx/:/var/log/nginx
