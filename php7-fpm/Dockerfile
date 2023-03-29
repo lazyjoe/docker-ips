@@ -1,4 +1,3 @@
-# 构建基础镜像
 FROM php:7.4-fpm
 ARG TIMEZONE
 
