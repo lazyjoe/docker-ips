@@ -4,9 +4,10 @@ services:
         build: mysql
         platform: linux/amd64
         volumes:
-            - ${MYSQL_DB_PATH}:/var/lib/mysql
             # new image should include the sql file, it's gonna import it on startup
             - ${IPS_SQL_FILE}:/docker-entrypoint-initdb.d/my.sql
+            # once sql is imported, folder of MYSQL_DB_PATH won't be empty, so it won't import it again
+            - ${MYSQL_DB_PATH}:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
