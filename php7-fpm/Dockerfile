@@ -2,8 +2,8 @@ FROM php:7.4-fpm
 ARG TIMEZONE
 
 ENV ALIAS1="alias ll='ls -al --color=auto'"
-ENV ALIAS2="alias hg='history|grep -v grep|grep -v hg|grep'"
-ENV ALIAS3="alias pag='ps aux|grep -v grep|grep -v pag|grep'"
+ENV ALIAS2="alias hg='history|grep -v grep|grep -v hg|grep --color=always'"
+ENV ALIAS3="alias pag='ps aux|grep -v grep|grep -v pag|grep --color=always'"
 
 RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory-limit.ini && \
     sed -i 's/;security.limit_extensions =.*/security.limit_extensions = .php .html .htm .txt .js .css .ico .woff .woff2 .png .ttf/g' /usr/local/etc/php-fpm.d/www.conf && \
@@ -28,7 +28,7 @@ RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory-limit.ini && \
     echo "source ~/.bashrc" >> ~/.bash_profile && \
     rm -rf /var/lib/apt/lists/*
 
-ENV XDEBUG_MODE=debug
-ENV XDEBUG_CONFIG="remote_enable=1 remote_mode=req client_port=9001 client_host=host.docker.internal discover_client_host=0 idekey=VSCODE"
+# ENV XDEBUG_MODE=debug
+# ENV XDEBUG_CONFIG="remote_enable=1 remote_mode=req client_port=9001 client_host=host.docker.internal discover_client_host=0 idekey=VSCODE"
 
 WORKDIR /var/www/forum

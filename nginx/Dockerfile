@@ -1,7 +1,20 @@
 FROM debian:stretch
 
+ENV ALIAS1="alias ll='ls -al --color=auto'"
+ENV ALIAS2="alias hg='history|grep -v grep|grep -v hg|grep --color=always'"
+ENV ALIAS3="alias pag='ps aux|grep -v grep|grep -v pag|grep --color=always'"
+ENV ALIAS4="alias ter='tail -f /var/log/nginx/error.log|ccze -A'"
+ENV ALIAS5="alias tac='tail -f /var/log/nginx/access.log|ccze -A'"
+
 RUN apt-get update && apt-get install -y \
-    nginx
+    nginx ccze && \
+    echo "$ALIAS1" >> ~/.bashrc && \
+    echo "$ALIAS2" >> ~/.bashrc && \
+    echo "$ALIAS3" >> ~/.bashrc && \
+    echo "$ALIAS4" >> ~/.bashrc && \
+    echo "$ALIAS5" >> ~/.bashrc && \
+    echo "source ~/.bashrc" >> ~/.bash_profile && \
+    rm -rf /var/lib/apt/lists/*
 
 ADD nginx.conf /etc/nginx/
 ADD forum.conf /etc/nginx/sites-available/
