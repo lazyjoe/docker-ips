@@ -28,7 +28,7 @@ RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory-limit.ini && \
     echo "source ~/.bashrc" >> ~/.bash_profile && \
     rm -rf /var/lib/apt/lists/*
 
-# ENV XDEBUG_MODE=debug
-# ENV XDEBUG_CONFIG="remote_enable=1 remote_mode=req client_port=9001 client_host=host.docker.internal discover_client_host=0 idekey=VSCODE"
+ENV XDEBUG_MODE=debug
+ENV XDEBUG_CONFIG="remote_enable=1 remote_mode=req client_port=9001 client_host=host.docker.internal discover_client_host=0 idekey=VSCODE"
 
 WORKDIR /var/www/forum
