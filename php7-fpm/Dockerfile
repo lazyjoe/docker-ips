@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.2-fpm
 ARG TIMEZONE
 
 ENV ALIAS1="alias ll='ls -al --color=auto'"
@@ -13,12 +13,13 @@ RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory-limit.ini && \
     unzip \
     libpng-dev \
     python2 \
+    libzip-dev \
     nodejs && \
     rm -rf /var/lib/apt/lists/* && \
-    docker-php-ext-install pdo pdo_mysql gd mysqli && \
+    docker-php-ext-install pdo pdo_mysql gd mysqli zip exif && \
     ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone && \
     printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini && \
-    pecl install xdebug-3.0.4 && \
+    pecl install xdebug && \
     docker-php-ext-enable xdebug && \
     echo "$ALIAS1" >> ~/.bashrc && \
     echo "$ALIAS2" >> ~/.bashrc && \
