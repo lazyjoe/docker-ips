@@ -12,15 +12,18 @@ RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory-limit.ini && \
     git \
     unzip \
     libpng-dev \
+    libjpeg62-turbo-dev \
     python2 \
     libzip-dev \
     nodejs && \
     rm -rf /var/lib/apt/lists/* && \
-    docker-php-ext-install pdo pdo_mysql gd mysqli zip exif && \
+    docker-php-ext-install pdo pdo_mysql mysqli zip exif && \
     ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone && \
     printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug && \
+    docker-php-ext-configure gd --with-jpeg=/usr/include/ && \
+    docker-php-ext-install -j$(nproc) gd && \
     echo "$ALIAS1" >> ~/.bashrc && \
     echo "$ALIAS2" >> ~/.bashrc && \
     echo "$ALIAS3" >> ~/.bashrc && \
